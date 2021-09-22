@@ -173,7 +173,7 @@ class ForNode(Node):
                 return self.nodelist_empty.render(context)
             nodelist = []
             if self.is_reversed:
-                values = reversed(values)
+                values = list(reversed(values))
             num_loopvars = len(self.loopvars)
             unpack = num_loopvars > 1
             # Create a forloop value in the context.  We'll update counters on each
