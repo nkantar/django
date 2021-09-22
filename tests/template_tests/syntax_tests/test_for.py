@@ -50,6 +50,30 @@ class ForTagTests(SimpleTestCase):
         output = self.engine.render_to_string('for-tag-vars06', {'values': [6, 6, 6]})
         self.assertEqual(output, 'xxl')
 
+    @setup({'for-tag-previous-none': '{% for val in values %}'
+                                     '{% if val == 6 and not forloop.previous %}no previous{% endif %}{% endfor %}'})
+    def test_for_previous_none(self):
+        output = self.engine.render_to_string('for-tag-previous-none', {'values': [6, 7, 8]})
+        self.assertEqual(output, 'no previous')
+
+    @setup({'for-tag-previous-some': '{% for val in values %}'
+                                     '{% if val == 7 and forloop.previous == 6 %}previous{% endif %}{% endfor %}'})
+    def test_for_previous_some(self):
+        output = self.engine.render_to_string('for-tag-previous-some', {'values': [6, 7, 8]})
+        self.assertEqual(output, 'previous')
+
+    @setup({'for-tag-next-none': '{% for val in values %}'
+                                 '{% if val == 8 and not forloop.next %}no next{% endif %}{% endfor %}'})
+    def test_for_next_none(self):
+        output = self.engine.render_to_string('for-tag-next-none', {'values': [6, 7, 8]})
+        self.assertEqual(output, 'no next')
+
+    @setup({'for-tag-next-some': '{% for val in values %}'
+                                 '{% if val == 7 and forloop.next == 8 %}next{% endif %}{% endfor %}'})
+    def test_for_next_some(self):
+        output = self.engine.render_to_string('for-tag-next-some', {'values': [6, 7, 8]})
+        self.assertEqual(output, 'next')
+
     @setup({'for-tag-unpack01': '{% for key,value in items %}{{ key }}:{{ value }}/{% endfor %}'})
     def test_for_tag_unpack01(self):
         output = self.engine.render_to_string('for-tag-unpack01', {'items': (('one', 1), ('two', 2))})

@@ -190,6 +190,16 @@ class ForNode(Node):
                 loop_dict['first'] = (i == 0)
                 loop_dict['last'] = (i == len_values - 1)
 
+                # Shortcuts to previous and next values.
+                if i != 0:
+                    loop_dict['previous'] = values[i - 1]
+                else:
+                    loop_dict['previous'] = None
+                try:
+                    loop_dict['next'] = values[i + 1]
+                except IndexError:
+                    loop_dict['next'] = None
+
                 pop_context = False
                 if unpack:
                     # If there are multiple loop variables, unpack the item into
